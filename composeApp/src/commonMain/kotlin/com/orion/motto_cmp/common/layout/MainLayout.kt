@@ -1,12 +1,19 @@
 package com.orion.motto_cmp.common.layout
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.orion.motto_cmp.common.components.app.AppBar
+import com.orion.motto_cmp.common.components.bottom_nav.BottomNav
 
 @Composable
 fun MainLayout(
@@ -14,12 +21,26 @@ fun MainLayout(
     content: @Composable () -> Unit,
     isShowBottomNav: Boolean = false,
 ) {
-    Column(
+    Box(
         modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .safeContentPadding()
+            .fillMaxSize()
     ) {
-        AppBar()
-        content()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp)
+                .safeContentPadding()
+        ) {
+            AppBar()
+            content()
+            Spacer(modifier = Modifier.weight(1f))
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 10.dp)
+        ) {
+            BottomNav()
+        }
     }
 }
