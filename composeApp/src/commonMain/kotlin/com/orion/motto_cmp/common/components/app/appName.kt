@@ -8,11 +8,12 @@ import androidx.compose.ui.text.TextStyle
 import com.orion.motto_cmp.ui.GetAuxMono
 import mottocmp.composeapp.generated.resources.Res
 import mottocmp.composeapp.generated.resources.app_name
+import mottocmp.composeapp.generated.resources.app_title
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppName(
-    title : String = stringResource(Res.string.app_name),
+    title : String = stringResource(Res.string.app_title),
     style: TextStyle = MaterialTheme.typography.titleMedium,
     color: Color = MaterialTheme.colorScheme.onSurface
 ){
