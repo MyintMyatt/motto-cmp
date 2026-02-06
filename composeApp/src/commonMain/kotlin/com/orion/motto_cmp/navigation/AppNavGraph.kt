@@ -19,11 +19,11 @@ fun AppNavGraph(
     ) {
         composable<Screen.Home>(enterTransition = {
             slideIntoContainer(
-                AnimatedContentTransitionScope.SlideDirection.Right, tween(500)
+                AnimatedContentTransitionScope.SlideDirection.Right, tween(300)
             )
         }, exitTransition = {
             slideOutOfContainer(
-                AnimatedContentTransitionScope.SlideDirection.Left, tween(400)
+                AnimatedContentTransitionScope.SlideDirection.Left, tween(300)
             )
         }) {
             MainLayout(
@@ -36,7 +36,15 @@ fun AppNavGraph(
                     )
                 })
         }
-        composable<Screen.Reading> {
+        composable<Screen.Reading>(enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Left, tween(300)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right, tween(300)
+            )
+        }) {
             MainLayout(
                 navController = navController,
                 onThemeToggle = onThemeToggle,
