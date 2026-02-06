@@ -18,11 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNav(
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route;
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -52,8 +57,9 @@ fun BottomNav(
                 bottomNavItems.forEach { item ->
                     GlassNavItem(
                         label = item.label,
-                        isSelected = "home" == item.route,
+                        isSelected = currentRoute == item.route.toString(),
                         onClick = {
+                            navController.navigate(item.route)
 //                            navController.navigate(item.route) {
 //                                popUpTo(navController.graph.startDestinationId) {
 //                                    saveState = true
