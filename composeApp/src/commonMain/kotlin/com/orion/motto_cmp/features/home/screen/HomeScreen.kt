@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.orion.motto_cmp.common.components.app.AppLogo
 import com.orion.motto_cmp.common.components.app.AppName
 import com.orion.motto_cmp.common.components.app.TextHeadLine
@@ -42,7 +43,9 @@ import com.orion.motto_cmp.features.home.components.LearningModuleCard
 import com.orion.motto_cmp.features.home.data.HomePageModules
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavHostController
+) {
     var screenSize by remember { mutableStateOf(IntSize.Zero) }
     var windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })
     Box(modifier = Modifier.onGloballyPositioned { coordinates -> screenSize = coordinates.size }
@@ -94,7 +97,9 @@ fun HomeScreen() {
                             desc = module.desc,
                             iconText = module.icon,
                             iconColor = module.color,
-                            onClick = {})
+                            onClick = {
+                                navController.navigate(module.route)
+                            })
                     }
                 }
             }
@@ -135,7 +140,9 @@ fun HomeScreen() {
                                 desc = module.desc,
                                 iconText = module.icon,
                                 iconColor = module.color,
-                                onClick = {})
+                                onClick = {
+                                    navController.navigate(module.route)
+                                })
                         }
 
                     }
