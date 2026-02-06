@@ -17,17 +17,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDarkTheme: Boolean,
+    isToggleEnabled: Boolean,
+    animateIcon: Boolean = true, // Pass this down
+    onThemeToggle: (Offset) -> Unit
 ) {
     val cardShape = RoundedCornerShape(13.dp)
 
     Card(
-        onClick = {},
         modifier = Modifier
             .shadow(
                 elevation = 3.dp, shape = cardShape,
@@ -57,18 +61,18 @@ fun AppBar(
             // SPACE
             Spacer(modifier = Modifier.weight(1.5f))
 
-            Icon(
-                imageVector = Icons.Rounded.LightMode,
-                contentDescription = "icon",
-            )
+//            Icon(
+//                imageVector = Icons.Rounded.LightMode,
+//                contentDescription = "icon",
+//            )
 
             // THEME TOGGLE ICON
-//            ThemeToggleButton(
-//                isDarkMode = isDarkTheme,
-//                onToggle = onThemeToggle,
-//                animate = animateIcon,
-//                isToggleEnabled = isToggleEnabled
-//            )
+            ThemeToggleButton(
+                isDarkMode = isDarkTheme,
+                onToggle = onThemeToggle,
+                animate = animateIcon,
+                isToggleEnabled = isToggleEnabled
+            )
 
         }
     }

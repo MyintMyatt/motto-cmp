@@ -44,7 +44,7 @@ import com.orion.motto_cmp.features.home.data.HomePageModules
 
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     var screenSize by remember { mutableStateOf(IntSize.Zero) }
     var windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })

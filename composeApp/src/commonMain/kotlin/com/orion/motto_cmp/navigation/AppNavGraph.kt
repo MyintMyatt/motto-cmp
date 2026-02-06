@@ -12,7 +12,7 @@ import com.orion.motto_cmp.features.reading.screens.ReadingScreen
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController
+    navController: NavHostController, isDarkTheme: Boolean, onThemeToggle: () -> Unit
 ) {
     NavHost(
         navController = navController, startDestination = Screen.Home
@@ -27,43 +27,66 @@ fun AppNavGraph(
             )
         }) {
             MainLayout(
-                navController = navController, content = {
-                    HomeScreen(navController)
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
+                    HomeScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Reading> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
         composable<Screen.Kanji> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
         composable<Screen.Grammar> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
         composable<Screen.Listening> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
         composable<Screen.Vocabulary> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
         composable<Screen.Setting> {
             MainLayout(
-                navController = navController, content = {
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                content = {
                     ReadingScreen()
                 })
         }
