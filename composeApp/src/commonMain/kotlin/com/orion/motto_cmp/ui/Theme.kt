@@ -40,12 +40,12 @@ fun MottoTheme(
     content: @Composable () -> Unit
 ) {
 
-    //for theme switch
-//    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+//    for theme switch
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
 
     MaterialTheme(
-        colorScheme = LightColorScheme,
+        colorScheme = colorScheme,
         typography = DefaultTypography(),
         content = content
     )
