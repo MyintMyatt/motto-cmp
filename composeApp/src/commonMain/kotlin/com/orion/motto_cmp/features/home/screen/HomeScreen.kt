@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
@@ -76,7 +77,7 @@ fun HomeScreen(
                                 }
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Text(
-                                    "Ready to Start your journey? Pick a module below to master your fluency.",
+                                    "Ready to Start your journey? Pick a module below to master your fluency." , color = MaterialTheme.colorScheme.primary
                                 )
                                 Spacer(modifier = Modifier.height(40.dp))
                             }
@@ -119,7 +120,7 @@ fun HomeScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        "Ready to Start your journey? Pick a module below to master your fluency.",
+                        "Ready to Start your journey? Pick a module below to master your fluency.", color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(40.dp))
                     TextHeadLine("Learning Modules")
