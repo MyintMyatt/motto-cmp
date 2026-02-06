@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AutoAwesomeMosaic
 import androidx.compose.material.icons.rounded.LightMode
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -43,14 +42,14 @@ fun AppBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
-                .padding(horizontal = 15.dp),
+                .padding(horizontal = 10.dp, vertical = 8.dp),
 
             verticalAlignment = Alignment.CenterVertically
         ) {
             // APP LOGO
             AppLogo()
             // SPACE
-            Spacer(modifier = Modifier.weight(.1f))
+            Spacer(modifier = Modifier.widthIn(10.dp))
 
             // APP NAME
             AppName()
