@@ -26,7 +26,7 @@ fun BottomNav(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route;
+    val currentDestination = navController.currentBackStackEntryAsState().value?.destination
 
     Box(
         modifier = modifier
@@ -44,9 +44,9 @@ fun BottomNav(
                 // The key is a very low alpha white
                 containerColor = MaterialTheme.colorScheme.background
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
             // Border adds the "sharp" glass edge look
-            border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.background.copy(alpha = 0.8f)),
+            border = BorderStroke(.9.dp, MaterialTheme.colorScheme.outline),
         ) {
             Row(
                 modifier = Modifier
@@ -55,9 +55,12 @@ fun BottomNav(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 bottomNavItems.forEach { item ->
+                    val isSelected = currentDestination?.route?.contains(
+                        item.route::class.qualifiedName.toString()
+                    ) == true
                     GlassNavItem(
                         label = item.label,
-                        isSelected = currentRoute == item.route.toString(),
+                        isSelected = isSelected,
                         onClick = {
                             navController.navigate(item.route)
 //                            navController.navigate(item.route) {
