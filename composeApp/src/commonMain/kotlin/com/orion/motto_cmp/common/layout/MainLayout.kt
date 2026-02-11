@@ -69,6 +69,11 @@ fun MainLayout(
     var screenSize by remember { mutableStateOf(IntSize.Zero) }
     val windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })
 
+    val horizontalPadding = when (windowSize) {
+        WindowSize.Compact -> 16.dp  // Standard mobile margin
+        WindowSize.Medium -> 32.dp
+        WindowSize.Expanded -> 64.dp // Large desktop margin
+    }
     Box(
         modifier = Modifier
             .onGloballyPositioned { coordinates -> screenSize = coordinates.size }
@@ -82,7 +87,8 @@ fun MainLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = if (windowSize == WindowSize.Compact) 0.dp else 15.dp)
+                    .padding(horizontal = horizontalPadding)
+//                    .padding(horizontal = if (windowSize == WindowSize.Compact) 0.dp else 15.dp)
                     .padding(top = 10.dp)
                     .safeContentPadding()
             ) {

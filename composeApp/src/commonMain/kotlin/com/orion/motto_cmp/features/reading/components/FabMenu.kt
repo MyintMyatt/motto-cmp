@@ -50,10 +50,14 @@ import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
+fun FabMenu(
+    modifier: Modifier = Modifier,
+    selectedLevel :String,
+    onLevelSelected: (String) -> Unit
+) {
     val listState = rememberLazyListState()
     var expanded by remember { mutableStateOf(false) }
-    var selectedLevel by remember { mutableStateOf(JapaneseLevel.N5.toString()) }
+//    var selectedLevel by remember { mutableStateOf(JapaneseLevel.N5.toString()) }
 
 
     // 1. Calculate which index is currently at the center of the wheel
@@ -118,27 +122,6 @@ fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
                             )
                         }
                     }
-                    //                if (expanded)
-                    //                    Icon(
-                    //                        Icons.Default.Clear,
-                    //                        contentDescription = "clear",
-                    //                        tint = MaterialTheme.colorScheme.surface,
-                    //                        modifier = Modifier
-                    //                            // Apply the animated rotation to the icon
-                    ////                            .graphicsLayer {
-                    ////                                rotationZ = rotation
-                    ////                            }
-                    //                            .padding(8.dp)
-                    //                    )
-                    //                else Text(
-                    //                    selectedLevel,
-                    //                    color = MaterialTheme.colorScheme.background,
-                    //                    fontWeight = FontWeight.Bold,
-                    ////                    modifier = Modifier.graphicsLayer {
-                    ////                        // APPLY ROTATION HERE: This rotates the entire button content
-                    ////                        rotationZ = rotation
-                    ////                    }
-                    //                )
                 }
             }) {
             if (expanded) {
@@ -150,7 +133,8 @@ fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
                         val scrolledLevel =
                             japaneseLevelDataList.getOrNull(currentCenterIndex)?.level
                         if (scrolledLevel != null) {
-                            selectedLevel = scrolledLevel.toString()
+                            onLevelSelected(selectedLevel.toString())
+//                            selectedLevel = scrolledLevel.toString()
                         }
                         expanded = false
                     }, // Closes when tapping outside!
@@ -208,7 +192,8 @@ fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
                                     alpha = scale // Fade out as it scales down
                                 }.clickable(
                                     onClick = {
-                                        selectedLevel = item.level.toString()
+                                        onLevelSelected(item.level.toString())
+//                                        selectedLevel = item.level.toString()
                                         expanded = false
                                     }), contentAlignment = Alignment.Center) {
                                 Text(
