@@ -17,6 +17,7 @@ fun AppNavGraph(
     NavHost(
         navController = navController, startDestination = Screen.Home
     ) {
+        // home screen
         composable<Screen.Home>(enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right, tween(300)
@@ -36,6 +37,8 @@ fun AppNavGraph(
                     )
                 })
         }
+
+        // reading screen
         composable<Screen.Reading>(enterTransition = {
             slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Left, tween(300)
@@ -49,8 +52,12 @@ fun AppNavGraph(
                 navController = navController,
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
+                isShowAppBar = false,
+                isShowBottomNav = false,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Kanji> {
@@ -59,7 +66,9 @@ fun AppNavGraph(
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Grammar> {
@@ -68,7 +77,9 @@ fun AppNavGraph(
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Listening> {
@@ -77,7 +88,9 @@ fun AppNavGraph(
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Vocabulary> {
@@ -86,7 +99,9 @@ fun AppNavGraph(
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
         composable<Screen.Setting> {
@@ -95,7 +110,9 @@ fun AppNavGraph(
                 onThemeToggle = onThemeToggle,
                 isDarkTheme = isDarkTheme,
                 content = {
-                    ReadingScreen()
+                    ReadingScreen(
+                        navController = navController
+                    )
                 })
         }
     }
