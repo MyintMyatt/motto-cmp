@@ -1,6 +1,7 @@
 package com.orion.motto_cmp.features.reading.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
@@ -32,13 +34,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.orion.motto_cmp.common.components.app.TextHeadLine
 import com.orion.motto_cmp.common.components.app.TextTitle
+import com.orion.motto_cmp.common.constant.JapaneseLevel
 import com.orion.motto_cmp.common.util.WindowSize
 import com.orion.motto_cmp.common.util.rememberWindowSize
 import com.orion.motto_cmp.features.reading.components.FabMenu
@@ -49,16 +55,16 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun ReadingScreen(
     navController: NavController,
-    isDarkTheme : Boolean = false
+    isDarkTheme: Boolean = false
 ) {
 
     var screenSize by remember { mutableStateOf(IntSize.Zero) }
     var windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })
+    var selectedLevel by remember { mutableStateOf(JapaneseLevel.N5.toString()) }
 
-
-    Box (
+    Box(
         modifier = Modifier.fillMaxSize()
-    ){
+    ) {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -76,26 +82,45 @@ fun ReadingScreen(
                     )
                 ) {
                     Icon(
-                        Icons.Default.ChevronLeft, contentDescription = "back icon", tint = MaterialTheme.colorScheme.primary
+                        Icons.Default.ChevronLeft,
+                        contentDescription = "back icon",
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                TextHeadLine("Reading Modules")
+                Row (
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ){
+                    TextHeadLine("Reading Modules")
+                    Box(
+                        modifier = Modifier
+                            .width(35.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color(0xFFFECDD3)),
+                        contentAlignment = Alignment.Center
+
+                    ) {
+                        Text(text = selectedLevel, fontSize = 13.sp, textAlign = TextAlign.Center)
+                    }
+                }
             }
 
             LazyVerticalGrid(
-                columns = if (windowSize == WindowSize.Expanded) GridCells.Fixed(3) else GridCells.Adaptive(minSize = 350.dp),
+                columns = if (windowSize == WindowSize.Expanded) GridCells.Fixed(3) else GridCells.Adaptive(
+                    minSize = 350.dp
+                ),
                 contentPadding = PaddingValues(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ){
+            ) {
                 itemsIndexed(
                     items = ReadingPageModuleList,
-                    key = { _, module -> module.title}
-                ){ index, module ->
-                    OutlinedCard (
+                    key = { _, module -> module.title }
+                ) { index, module ->
+                    OutlinedCard(
                         onClick = {}
-                    ){
+                    ) {
                         Column(
                             modifier = Modifier.padding(horizontal = 15.dp, vertical = 20.dp),
                             verticalArrangement = Arrangement.SpaceBetween
@@ -105,7 +130,9 @@ fun ReadingScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Image(
-                                    painter = if (!isDarkTheme)painterResource(module.imgBlack!!) else painterResource( module.img),
+                                    painter = if (!isDarkTheme) painterResource(module.imgBlack!!) else painterResource(
+                                        module.img
+                                    ),
                                     contentDescription = null,
                                     modifier = Modifier.size(26.dp)
                                 )
@@ -130,9 +157,10 @@ fun ReadingScreen(
         }
         // Place the FAB manually or pass it to MainLayout
         FabMenu(
-            windowSize = windowSize,
             modifier = Modifier
-                .align(Alignment.BottomEnd)
+                .align(Alignment.BottomEnd),
+            selectedLevel = selectedLevel,
+            onLevelSelected = { newLevel -> selectedLevel = newLevel }
 //                .padding(/*bottom = 80.dp,*/ end = 16.dp)
         )
     }
