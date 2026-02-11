@@ -56,7 +56,8 @@ fun AppNavGraph(
                 isShowBottomNav = false,
                 content = {
                     ReadingScreen(
-                        navController = navController
+                        navController = navController,
+                        isDarkTheme = isDarkTheme
                     )
                 })
         }

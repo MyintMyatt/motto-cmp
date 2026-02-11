@@ -53,7 +53,6 @@ fun LearningModuleCard(
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp),
-
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             // UPPER SECTION
