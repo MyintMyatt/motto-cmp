@@ -16,7 +16,7 @@ fun TextHeadLine(
     Text(
         text,
         style = style,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.W500,
         color= color
     )
 }

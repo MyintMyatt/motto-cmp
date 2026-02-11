@@ -41,8 +41,8 @@ import com.orion.motto_cmp.ui.MottoTheme
 @Composable
 fun MainLayout(
     navController: NavHostController,
-    isShowAppBar: Boolean = false,
-    isShowBottomNav: Boolean = false,
+    isShowAppBar: Boolean = true,
+    isShowBottomNav: Boolean = true,
     content: @Composable () -> Unit,
     isDarkTheme: Boolean,
     onThemeToggle: () -> Unit,
@@ -73,6 +73,7 @@ fun MainLayout(
         modifier = Modifier
             .onGloballyPositioned { coordinates -> screenSize = coordinates.size }
             .fillMaxSize()
+            .padding(0.dp)
     ) {
 
         //BASE LAYER
@@ -85,24 +86,28 @@ fun MainLayout(
                     .padding(top = 10.dp)
                     .safeContentPadding()
             ) {
-                AppBar(
-                    isDarkTheme = isDarkTheme,
-                    onThemeToggle = { offset ->
-                        // Trigger the animation by setting the center point
-                        revealCenter = offset
-                    },
-                    animateIcon = revealCenter == null,
-                    isToggleEnabled = revealCenter == null
-                )
+                if (isShowAppBar){
+                    AppBar(
+                        isDarkTheme = isDarkTheme,
+                        onThemeToggle = { offset ->
+                            // Trigger the animation by setting the center point
+                            revealCenter = offset
+                        },
+                        animateIcon = revealCenter == null,
+                        isToggleEnabled = revealCenter == null
+                    )
+                }
                 content()
                 Spacer(modifier = Modifier.weight(1f))
             }
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 10.dp)
-            ) {
-                BottomNav(navController = navController)
+            if (isShowBottomNav){
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 10.dp)
+                ) {
+                    BottomNav(navController = navController)
+                }
             }
         }
 
@@ -122,22 +127,26 @@ fun MainLayout(
                             .padding(top = 10.dp)
                             .safeContentPadding()
                     ) {
-                        AppBar(
-                            isDarkTheme = !isDarkTheme,
-                            animateIcon = true,
-                            isToggleEnabled = true,
-                            onThemeToggle = {}
-                        )
+                        if(isShowAppBar) {
+                            AppBar(
+                                isDarkTheme = !isDarkTheme,
+                                animateIcon = true,
+                                isToggleEnabled = true,
+                                onThemeToggle = {}
+                            )
+                        }
                         content()
                         Spacer(modifier = Modifier.weight(1f))
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 10.dp)
-                    ) {
-                        BottomNav(navController = navController)
+                    if (isShowBottomNav){
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 10.dp)
+                        ) {
+                            BottomNav(navController = navController)
+                        }
                     }
                 }
             }
