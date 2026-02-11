@@ -1,6 +1,7 @@
 package com.orion.motto_cmp.features.reading.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,22 +42,12 @@ fun ReadingScreen(
     var screenSize by remember { mutableStateOf(IntSize.Zero) }
     var windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })
 
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Blue)
-            .padding(0.dp)
-            .onGloballyPositioned { coordinates ->
-                screenSize = coordinates.size
 
-            },
-        floatingActionButton = {
-            FabMenu(windowSize = windowSize)
-        }
-    ) { paddingValues ->
+    Box (
+        modifier = Modifier.fillMaxSize()
+    ){
         Column(
-            modifier = Modifier.background(Color.Red).padding(paddingValues).fillMaxSize()
-            //            .padding(horizontal = 5.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -64,8 +55,7 @@ fun ReadingScreen(
                 IconButton(
                     onClick = {
                         navController.navigate(Screen.Home)
-                    },
-                    colors = IconButtonDefaults.iconButtonColors(
+                    }, colors = IconButtonDefaults.iconButtonColors(
                         MaterialTheme.colorScheme.primary.copy(
                             alpha = .05f
                         )
@@ -79,5 +69,12 @@ fun ReadingScreen(
                 TextHeadLine("Reading Page")
             }
         }
+        // Place the FAB manually or pass it to MainLayout
+        FabMenu(
+            windowSize = windowSize,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+//                .padding(/*bottom = 80.dp,*/ end = 16.dp)
+        )
     }
 }

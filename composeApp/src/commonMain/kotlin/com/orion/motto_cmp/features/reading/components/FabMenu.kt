@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.orion.motto_cmp.common.constant.JapaneseLevel
 import com.orion.motto_cmp.common.util.WindowSize
 import com.orion.motto_cmp.features.reading.model.japaneseLevelDataList
+import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -74,154 +76,150 @@ fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
         animationSpec = tween(durationMillis = 200),
         label = "icon_rotation"
     )
-
-    FloatingActionButtonMenu(
-        expanded = expanded,
-        button = {
-            ToggleFloatingActionButton(
-                checked = expanded,
-                onCheckedChange = { expanded = it },
-                containerColor = ToggleFloatingActionButtonDefaults.containerColor(
-//                    MaterialTheme.colorScheme.surface
-                    MaterialTheme.colorScheme.primary
-                ),
-                modifier = Modifier.graphicsLayer {
-                    // APPLY ROTATION HERE: This rotates the entire button content
-                    rotationZ = rotation
-                }
-            ) {
-                AnimatedContent(
-                    targetState = expanded,
-                    transitionSpec = {
-                        fadeIn(tween(150)) togetherWith fadeOut(tween(150))
-                    },
-                    label = "fab_content"
-                ) { isExpanded ->
-                    if (isExpanded) {
-                        Icon(
-                            Icons.Default.Clear,
-                            contentDescription = "clear",
-                            tint = MaterialTheme.colorScheme.surface
-                        )
-                    } else {
-                        Text(
-                            selectedLevel,
-                            color = MaterialTheme.colorScheme.background,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
-//                if (expanded)
-//                    Icon(
-//                        Icons.Default.Clear,
-//                        contentDescription = "clear",
-//                        tint = MaterialTheme.colorScheme.surface,
-//                        modifier = Modifier
-//                            // Apply the animated rotation to the icon
-////                            .graphicsLayer {
-////                                rotationZ = rotation
-////                            }
-//                            .padding(8.dp)
-//                    )
-//                else Text(
-//                    selectedLevel,
-//                    color = MaterialTheme.colorScheme.background,
-//                    fontWeight = FontWeight.Bold,
-////                    modifier = Modifier.graphicsLayer {
-////                        // APPLY ROTATION HERE: This rotates the entire button content
-////                        rotationZ = rotation
-////                    }
-//                )
-            }
+    val density = LocalDensity.current
+    val popupOffset = remember(density) {
+        with(density) {
+            IntOffset(
+                x = (-30).dp.roundToPx(), y = (-90).dp.roundToPx()
+            )
         }
-    ) {
-        if (expanded) {
-            Popup(
-                alignment = Alignment.Center, // Position it relative to the FAB
-                onDismissRequest = {
-                    // 2. SET VALUE ON DISMISS
-                    // When user clicks outside, take the item currently in the center
-                    val scrolledLevel =
-                        japaneseLevelDataList.getOrNull(currentCenterIndex)?.level
-                    if (scrolledLevel != null) {
-                        selectedLevel = scrolledLevel.toString()
-                    }
-                    expanded = false
-                }, // Closes when tapping outside!
-                offset = IntOffset(-30, -90),
-                properties = PopupProperties(
-                    focusable = true // Ensures it captures the back button and clicks
-                )
-            ) {
+    }
 
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .size(width = 60.dp, height = 100.dp)
-                        .background(/*MaterialTheme.colorScheme.secondary.copy(alpha = .4f)*/
-                            MaterialTheme.colorScheme.surface,
-                            RoundedCornerShape(15.dp)
-                        )
-                        .border(
-                            width = .3.dp,
-                            color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(15.dp)
-                        ),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    itemsIndexed(japaneseLevelDataList) { index, item ->
-                        val scale by remember {
-                            derivedStateOf {
-                                val layoutInfo = listState.layoutInfo
-                                val visibleItemsInfo = layoutInfo.visibleItemsInfo
-                                val itemInfo = visibleItemsInfo.find { it.index == index }
-
-                                if (itemInfo != null) {
-                                    // Calculate center of the viewport
-                                    val viewportCenter = layoutInfo.viewportEndOffset / 2f
-                                    // Calculate center of the item
-                                    val itemCenter = itemInfo.offset + (itemInfo.size / 2f)
-                                    // Calculate distance from center (normalized 0.0 to 1.0)
-                                    val distanceFromCenter =
-                                        kotlin.math.abs(viewportCenter - itemCenter)
-                                    val normalizedDistance =
-                                        (distanceFromCenter / viewportCenter).coerceIn(0f, 1f)
-
-                                    1f - (normalizedDistance * 0.7f) // Scale factor
-                                } else {
-                                    0.3f // Default scale for non-visible items
-                                }
-                            }
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = if (item.level == JapaneseLevel.N5) 27.5.dp else 0.dp,
-                                    bottom = if (item.level == JapaneseLevel.N1) 27.5.dp else 0.dp
-                                )
-                                .height(35.dp)
-                                .graphicsLayer {
-                                    scaleX = scale
-                                    scaleY = scale
-                                    alpha = scale // Fade out as it scales down
-                                }
-                                .clickable(
-                                    onClick = {
-                                        selectedLevel = item.level.toString()
-                                        expanded = false
-                                    }
-                                ), contentAlignment = Alignment.Center
-                        ) {
+    Box(modifier = modifier) {
+        FloatingActionButtonMenu(
+            expanded = expanded, button = {
+                ToggleFloatingActionButton(
+                    checked = expanded,
+                    onCheckedChange = { expanded = it },
+                    containerColor = ToggleFloatingActionButtonDefaults.containerColor(
+                        //                    MaterialTheme.colorScheme.surface
+                        MaterialTheme.colorScheme.primary
+                    ),
+                    modifier = Modifier.graphicsLayer {
+                        // APPLY ROTATION HERE: This rotates the entire button content
+                        rotationZ = rotation
+                    }) {
+                    AnimatedContent(
+                        targetState = expanded, transitionSpec = {
+                            fadeIn(tween(150)) togetherWith fadeOut(tween(150))
+                        }, label = "fab_content"
+                    ) { isExpanded ->
+                        if (isExpanded) {
+                            Icon(
+                                Icons.Default.Clear,
+                                contentDescription = "clear",
+                                tint = MaterialTheme.colorScheme.surface
+                            )
+                        } else {
                             Text(
-                                text = item.level.toString(),
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.headlineSmall
+                                selectedLevel,
+                                color = MaterialTheme.colorScheme.background,
+                                fontWeight = FontWeight.Bold
                             )
                         }
                     }
+                    //                if (expanded)
+                    //                    Icon(
+                    //                        Icons.Default.Clear,
+                    //                        contentDescription = "clear",
+                    //                        tint = MaterialTheme.colorScheme.surface,
+                    //                        modifier = Modifier
+                    //                            // Apply the animated rotation to the icon
+                    ////                            .graphicsLayer {
+                    ////                                rotationZ = rotation
+                    ////                            }
+                    //                            .padding(8.dp)
+                    //                    )
+                    //                else Text(
+                    //                    selectedLevel,
+                    //                    color = MaterialTheme.colorScheme.background,
+                    //                    fontWeight = FontWeight.Bold,
+                    ////                    modifier = Modifier.graphicsLayer {
+                    ////                        // APPLY ROTATION HERE: This rotates the entire button content
+                    ////                        rotationZ = rotation
+                    ////                    }
+                    //                )
+                }
+            }) {
+            if (expanded) {
+                Popup(
+                    alignment = Alignment.Center, // Position it relative to the FAB
+                    onDismissRequest = {
+                        // 2. SET VALUE ON DISMISS
+                        // When user clicks outside, take the item currently in the center
+                        val scrolledLevel =
+                            japaneseLevelDataList.getOrNull(currentCenterIndex)?.level
+                        if (scrolledLevel != null) {
+                            selectedLevel = scrolledLevel.toString()
+                        }
+                        expanded = false
+                    }, // Closes when tapping outside!
+                    offset = popupOffset,
+//                    offset = IntOffset(-55, -180), <= mobile
+                    //offset = IntOffset(-30, -90), <= desktop
+                    properties = PopupProperties(
+                        focusable = true // Ensures it captures the back button and clicks
+                    )
+                ) {
 
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.size(width = 60.dp, height = 100.dp)
+                            .background(/*MaterialTheme.colorScheme.secondary.copy(alpha = .4f)*/
+                                MaterialTheme.colorScheme.surface, RoundedCornerShape(15.dp)
+                            ).border(
+                                width = .3.dp,
+                                color = MaterialTheme.colorScheme.outline,
+                                shape = RoundedCornerShape(15.dp)
+                            ),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        itemsIndexed(japaneseLevelDataList) { index, item ->
+                            val scale by remember {
+                                derivedStateOf {
+                                    val layoutInfo = listState.layoutInfo
+                                    val visibleItemsInfo = layoutInfo.visibleItemsInfo
+                                    val itemInfo = visibleItemsInfo.find { it.index == index }
+
+                                    if (itemInfo != null) {
+                                        // Calculate center of the viewport
+                                        val viewportCenter = layoutInfo.viewportEndOffset / 2f
+                                        // Calculate center of the item
+                                        val itemCenter = itemInfo.offset + (itemInfo.size / 2f)
+                                        // Calculate distance from center (normalized 0.0 to 1.0)
+                                        val distanceFromCenter = abs(viewportCenter - itemCenter)
+                                        val normalizedDistance =
+                                            (distanceFromCenter / viewportCenter).coerceIn(0f, 1f)
+
+                                        1f - (normalizedDistance * 0.7f) // Scale factor
+                                    } else {
+                                        0.3f // Default scale for non-visible items
+                                    }
+                                }
+                            }
+
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(
+                                    top = if (item.level == JapaneseLevel.N5) 27.5.dp else 0.dp,
+                                    bottom = if (item.level == JapaneseLevel.N1) 27.5.dp else 0.dp
+                                ).height(35.dp).graphicsLayer {
+                                    scaleX = scale
+                                    scaleY = scale
+                                    alpha = scale // Fade out as it scales down
+                                }.clickable(
+                                    onClick = {
+                                        selectedLevel = item.level.toString()
+                                        expanded = false
+                                    }), contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = item.level.toString(),
+                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.headlineSmall
+                                )
+                            }
+                        }
+
+                    }
                 }
             }
         }
