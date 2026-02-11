@@ -214,7 +214,8 @@ fun FabMenu(modifier: Modifier = Modifier, windowSize: WindowSize) {
                                 Text(
                                     text = item.level.toString(),
                                     fontWeight = FontWeight.Bold,
-                                    style = MaterialTheme.typography.headlineSmall
+                                    style = MaterialTheme.typography.headlineSmall,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
