@@ -129,7 +129,8 @@ fun MainLayout(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.background)
-                            .padding(horizontal = if (windowSize == WindowSize.Compact) 0.dp else 15.dp)
+                            .padding(horizontal = horizontalPadding)
+//                            .padding(horizontal = if (windowSize == WindowSize.Compact) 0.dp else 15.dp)
                             .padding(top = 10.dp)
                             .safeContentPadding()
                     ) {
