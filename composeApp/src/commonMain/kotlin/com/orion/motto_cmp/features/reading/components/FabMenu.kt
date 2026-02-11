@@ -45,7 +45,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.orion.motto_cmp.common.constant.JapaneseLevel
 import com.orion.motto_cmp.common.util.WindowSize
-import com.orion.motto_cmp.features.reading.model.japaneseLevelDataList
+import com.orion.motto_cmp.common.data.model.japaneseLevelDataList
 import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)

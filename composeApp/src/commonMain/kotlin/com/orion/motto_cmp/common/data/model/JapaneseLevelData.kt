@@ -1,4 +1,4 @@
-package com.orion.motto_cmp.features.reading.model
+package com.orion.motto_cmp.common.data.model
 
 import com.orion.motto_cmp.common.constant.JapaneseLevel
 
