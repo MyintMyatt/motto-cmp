@@ -1,5 +1,14 @@
 package com.orion.motto_cmp.features.reading.screens
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
@@ -62,6 +73,21 @@ fun ReadingScreen(
     var windowSize = rememberWindowSize(with(LocalDensity.current) { screenSize.width.toDp() })
     var selectedLevel by remember { mutableStateOf(JapaneseLevel.N5.toString()) }
 
+
+    // 1. Create a state for the target alpha
+    var targetAlpha by remember { mutableStateOf(1f) }
+
+// 2. Watch for level changes
+    LaunchedEffect(selectedLevel) {
+        targetAlpha = 0f    // Instantly hide
+        targetAlpha = 1f    // Animate back to visible
+    }
+    val gridAlpha by animateFloatAsState(
+        targetValue = targetAlpha,
+        animationSpec = tween(600),
+        finishedListener = {},
+        label = "GridAlpha"
+    )
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -101,12 +127,27 @@ fun ReadingScreen(
                         contentAlignment = Alignment.Center
 
                     ) {
-                        Text(text = selectedLevel, fontSize = 13.sp, textAlign = TextAlign.Center)
+                        AnimatedContent(
+                            targetState = selectedLevel,
+                            transitionSpec = {
+                                (slideInVertically { height -> height } + fadeIn() togetherWith
+                                        slideOutVertically { height -> -height } + fadeOut())
+                                    .using(SizeTransform(clip = false))
+                            },
+                            label = "LevelChangeAnimation"
+                        ) { targetLevel ->
+                            Text(
+                                text = targetLevel,
+                                fontSize = 13.sp,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }
 
             LazyVerticalGrid(
+                modifier = Modifier.graphicsLayer { alpha = gridAlpha },
                 columns = if (windowSize == WindowSize.Expanded) GridCells.Fixed(3) else GridCells.Adaptive(
                     minSize = 350.dp
                 ),
