@@ -133,7 +133,7 @@ fun FabMenu(
                         val scrolledLevel =
                             japaneseLevelDataList.getOrNull(currentCenterIndex)?.level
                         if (scrolledLevel != null) {
-                            onLevelSelected(selectedLevel.toString())
+                            onLevelSelected(scrolledLevel.toString())
 //                            selectedLevel = scrolledLevel.toString()
                         }
                         expanded = false
