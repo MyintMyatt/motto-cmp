@@ -16,7 +16,7 @@ val bottomNavItems = listOf(
         icon = NavIcon.Vector(Icons.Rounded.AutoAwesomeMosaic),
     ),
     BottomNavItem(
-        route = Screen.Kanji,
+        route = Screen.HiraganaNKatakana,
         label = "Language",
         icon = NavIcon.Png(Res.drawable.hiragana_a)
     ),

@@ -7,6 +7,7 @@ sealed interface Screen {
     @Serializable object Home : Screen
     @Serializable object Reading : Screen
     @Serializable object Kanji : Screen
+    @Serializable object HiraganaNKatakana : Screen
     @Serializable object Grammar : Screen
     @Serializable object Listening : Screen
     @Serializable object Vocabulary : Screen
