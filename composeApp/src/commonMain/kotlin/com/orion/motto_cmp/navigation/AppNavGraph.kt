@@ -1,5 +1,6 @@
 package com.orion.motto_cmp.navigation
 
+import HiraganaScreen
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
@@ -61,6 +62,33 @@ fun AppNavGraph(
                     )
                 })
         }
+
+        // hiragana & katakana screen
+        composable<Screen.HiraganaNKatakana> (
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left, tween(300)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right, tween(300)
+                )
+            }
+        ){
+            MainLayout(
+                navController = navController,
+                onThemeToggle = onThemeToggle,
+                isDarkTheme = isDarkTheme,
+                isShowAppBar = false,
+                content = {
+                    HiraganaScreen(
+                        navController = navController
+                    )
+                }
+            )
+        }
+
         composable<Screen.Kanji> {
             MainLayout(
                 navController = navController,
