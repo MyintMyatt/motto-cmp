@@ -29,7 +29,8 @@ import com.orion.motto_cmp.navigation.Screen
 
 @Composable
 fun HiraganaScreen(
-    navController: NavController
+    navController: NavController,
+    isDarkTheme : Boolean
 ){
     Box(
         modifier = Modifier.fillMaxSize()
@@ -65,7 +66,7 @@ fun HiraganaScreen(
             }
 
             // body content
-            KanjiAppDemo()
+            KanjiAppDemo(isDarkTheme = isDarkTheme)
         }
     }
 }
@@ -79,7 +80,8 @@ data class KanjiStroke(
 @Composable
 fun AnimatedKanji(
     strokes: List<KanjiStroke>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isDarkTheme: Boolean
 ) {
     // 2. State to control the animation progress (0f to 1f)
     // We want to animate through ALL strokes sequentially.
@@ -122,13 +124,14 @@ fun AnimatedKanji(
                 )
             }
 
+
             // Draw the animated strokes
             parsedPaths.forEachIndexed { index, path ->
                 if (progress >= index + 1) {
                     // This stroke is fully finished
                     drawPath(
                         path = path,
-                        color = Color.Black,
+                        color = if (isDarkTheme) Color.White else Color.Black,
                         style = Stroke(width = 3f, cap = StrokeCap.Round, join = StrokeJoin.Round)
                     )
                 } else if (progress > index) {
@@ -145,7 +148,7 @@ fun AnimatedKanji(
 
                     drawPath(
                         path = partialPath,
-                        color = Color.Black,
+                        color = if (isDarkTheme) Color.White else Color.Black,
                         style = Stroke(width = 3f, cap = StrokeCap.Round, join = StrokeJoin.Round)
                     )
                 }
@@ -156,7 +159,7 @@ fun AnimatedKanji(
 
 // Usage Example
 @Composable
-fun KanjiAppDemo() {
+fun KanjiAppDemo(isDarkTheme : Boolean) {
     // Example Data: Kanji for "Tree" (木) - U+6728
     // Data from KanjiVG
     val treeKanji = listOf(
@@ -168,6 +171,7 @@ fun KanjiAppDemo() {
 
     AnimatedKanji(
         strokes = treeKanji,
-        modifier = Modifier.size(300.dp)
+        modifier = Modifier.size(300.dp),
+        isDarkTheme =  isDarkTheme
     )
 }

@@ -83,7 +83,8 @@ fun AppNavGraph(
                 isShowAppBar = false,
                 content = {
                     HiraganaScreen(
-                        navController = navController
+                        navController = navController,
+                        isDarkTheme = isDarkTheme
                     )
                 }
             )
